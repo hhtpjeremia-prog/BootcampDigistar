@@ -3,10 +3,9 @@ import joblib
 import pandas as pd
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
 
-model = joblib.load(BASE_DIR / "house_price_model.pkl")
-columns = joblib.load(BASE_DIR / "feature_columns.pkl")
+model = joblib.load("house_price_model.pkl")
+columns = joblib.load("feature_columns.pkl")
 
 
 st.title("Product House Price")
@@ -62,10 +61,12 @@ selected_location = st.selectbox(
     list(neighborhood_mapping.keys())
 )
 
-inputs["Neighborhood"] = selected_location
+inputs["Neighborhood"] = neighborhood_mapping[selected_location]
 
 df = pd.DataFrame([inputs])
 df = df[columns]
 prediction = model.predict(df)[0]
 
 st.success(f"💰 Prediksi Harga Rumah: {prediction:,.2f}")
+
+
